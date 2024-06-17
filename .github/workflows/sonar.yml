@@ -23,4 +23,4 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           args: >
-            -Dsonar.projectKey=sonar.projectKey=dm-bil_DVWA_58220875-9fb3-4fe2-9e3d-9e78ad902b47
+            -Dsonar.projectKey=dm-bil_DVWA_58220875-9fb3-4fe2-9e3d-9e78ad902b47
