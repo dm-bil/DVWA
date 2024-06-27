@@ -1,0 +1,26 @@
+# Name of this GitHub Actions workflow.
+name: Semgrep Diff Scan
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  semgrep:
+    # User definable name of this GitHub Actions job.
+    name: semgrep/ci
+    # If you are self-hosting, change the following `runs-on` value:
+    runs-on: ubuntu-latest
+
+    container:
+      # A Docker image with Semgrep installed. Do not change this.
+      image: semgrep/semgrep
+
+    steps:
+      # Fetch project source with GitHub Actions Checkout. Use either v3 or v4.
+      - uses: actions/checkout@v4
+      # Run the "semgrep ci" command on the command line of the docker image.
+      - run: semgrep ci --oss-only --dataflow-traces -q --text
