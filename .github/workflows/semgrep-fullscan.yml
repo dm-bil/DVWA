@@ -24,6 +24,12 @@ jobs:
       # Fetch project source with GitHub Actions Checkout. Use either v3 or v4.
       - uses: actions/checkout@v4
       # Run the "semgrep ci" command on the command line of the docker image.
-      - run: semgrep scan --config auto --oss-only --dataflow-traces -q --json --severity=WARNING --severity=ERROR .
+      - run: semgrep scan --config auto --oss-only --dataflow-traces -q --text --json-output=semgrep_fullscan.json --severity=WARNING --severity=ERROR .
+      
+      - name: Read report contents
+        id: read-report
+        run: echo "::set-output name=contents::$(cat semgrep_fullscan.json)"
 
-
+      - name: Conditionally run next step
+        if: ${{ contains(steps.read-report.outputs.contents, '"severity": "WARNING"' }}
+        run: echo "Expressions were found in the file."
