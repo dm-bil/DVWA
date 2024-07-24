@@ -31,5 +31,5 @@ jobs:
         run: echo "::set-output name=contents::$(cat semgrep_fullscan.json)"
 
       - name: Conditionally run next step
-        if: ${{ contains(steps.read-report.outputs.contents, '"severity": "WARNING"' }}
+        if: ${{ contains(steps.read-report.outputs.contents, '"severity":\ "WARNING"' }}
         run: echo "Expressions were found in the file."
