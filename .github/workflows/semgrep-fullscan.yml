@@ -41,20 +41,7 @@ jobs:
         run: |
             curl -L -X POST \
              -H "Accept: application/vnd.github+json" \
-             -H "Content-Type: application/json" \
              -H "Authorization: Bearer $GH_TOKEN"\
              -H "X-GitHub-Api-Version: 2022-11-28" \
              https://api.github.com/repos/${{ github.repository }}/check-runs \
-             -d @- <<EOF 
-             {
-               "name":"Semgrep Status Check", 
-               "head_sha":"${{ github.event.pull_request.head.sha }}", 
-               "conclusion":"failure",
-               "output":
-               {
-                 "title":"Semgrep scan results", 
-                 "summary":"Semgrep scanner has found '$ISSUES_COUNT' severe vulnerabilities!", 
-                 "text": "$(sed 's/\\/\\\\/g; s/"/\\"/g; s/$(printf '\r')$//' semgrep_fullscan.txt)"
-               }
-             }
-             EOF
+             -d '{"name":"Semgrep Status Check", "head_sha":"${{ github.event.pull_request.head.sha }}", "conclusion":"failure","actions":{"label":"scanner","description":"Semgrep full scan"},"output":{"title":"Semgrep scan results", "summary":"Semgrep scanner has found '$ISSUES_COUNT' severe vulnerabilities!", "text": "'"$(cat semgrep_fullscan.txt | tr -d '\n')"'"}}'    
