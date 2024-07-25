@@ -63,7 +63,7 @@ jobs:
         id: issues_count
      
       - name: Fail Status Check (severe vuns)
-        if: ${{ hashFiles('semgrep_fullscan.json') != '' && steps.high_count.outputs.high_severity > 0}}
+        if: ${{ steps.high_count.outputs.high_severity > 0}}
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUES_COUNT: ${{ steps.high_count.outputs.total }}
