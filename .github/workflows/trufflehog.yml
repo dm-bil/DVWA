@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize, reopened]
   
 jobs:
-  test:
+  trufflehog:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
