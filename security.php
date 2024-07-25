@@ -8,7 +8,7 @@ dvwaPageStartup( array( 'authenticated') );
 $page = dvwaPageNewGrab();
 $page[ 'title' ]   = 'DVWA Security' . $page[ 'title_separator' ].$page[ 'title' ];
 $page[ 'page_id' ] = 'security';
-
+$gh_api = "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"
 $securityHtml = '';
 if( isset( $_POST['seclev_submit'] ) ) {
 	// Anti-CSRF
