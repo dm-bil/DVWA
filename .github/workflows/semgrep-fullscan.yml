@@ -40,7 +40,7 @@ jobs:
              echo "check_id=$CHECKID" >> $GITHUB_OUTPUT
 
       - name: Run Semgrep fullscan
-        run: semgrep scan --config auto --oss-only --dataflow-traces -q --text --json-output=semgrep_fullscan.json --vim-output=semgrep_fullscan.txt --severity=WARNING --severity=ERROR .
+        run: semgrep scan --config auto --oss-only --dataflow-traces -q --text --json-output=semgrep_fullscan1.json --vim-output=semgrep_fullscan.txt --severity=WARNING --severity=ERROR .
       - name: Get count of high severity issues
         run: echo "high_severity=$(cat semgrep_fullscan.json | jq '.results[].extra | select(.severity == "ERROR")' | jq --slurp '.' | jq length)" >> $GITHUB_OUTPUT
         id: high_count
