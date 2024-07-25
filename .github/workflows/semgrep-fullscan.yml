@@ -11,19 +11,13 @@ on:
 
 jobs:
   semgrep:
-    # User definable name of this GitHub Actions job.
     name: semgrep/scan
-    # If you are self-hosting, change the following `runs-on` value:
     runs-on: ubuntu-latest
-
     container:
-      # A Docker image with Semgrep installed. Do not change this.
       image: semgrep/semgrep
-
     steps:
-      # Fetch project source with GitHub Actions Checkout. Use either v3 or v4.
       - uses: actions/checkout@v4
-      # Run the "semgrep ci" command on the command line of the docker image.
+
       - name: Create Status Check
         id: create_check
         env:
