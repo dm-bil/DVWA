@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
       # Run the "semgrep ci" command on the command line of the docker image.
       - run: semgrep scan --config auto --oss-only --dataflow-traces -q --text --json-output=semgrep_fullscan.json --severity=WARNING --severity=ERROR .
-      - run: echo "high_severity=$(cat report_semgrep.json | jq '.results[].extra | select(.severity == "ERROR")' | jq --slurp '.' | jq length)" >> $GITHUB_OUTPUT
+      - run: echo "high_severity=$(cat semgrep_fullscan.json | jq '.results[].extra | select(.severity == "ERROR")' | jq --slurp '.' | jq length)" >> $GITHUB_OUTPUT
         id: high_count
       - run: echo "${{ steps.high_count.outputs.high_severity }}"
 #      - name: Create Check Run
