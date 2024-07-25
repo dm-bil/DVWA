@@ -44,4 +44,4 @@ jobs:
              -H "Authorization: Bearer $GH_TOKEN"\
              -H "X-GitHub-Api-Version: 2022-11-28" \
              https://api.github.com/repos/${{ github.repository }}/check-runs \
-             -d '{"name":"Semgrep Status Check", "head_sha":"${{ github.event.pull_request.head.sha }}", "conclusion":"failure","output":{"title":"Semgrep scan results", "summary":"Semgrep scanner has found '$ISSUES_COUNT' severe vulnerabilities!", "text": "Report\nhere"}}'    
+             -d '{"name":"Semgrep Status Check", "head_sha":"${{ github.event.pull_request.head.sha }}", "conclusion":"failure","output":{"title":"Semgrep scan results", "summary":"Semgrep scanner has found '$ISSUES_COUNT' severe vulnerabilities!", "text": "Report\n\'here\'"}}'    
