@@ -25,14 +25,21 @@ jobs:
       - uses: actions/checkout@v4
       # Run the "semgrep ci" command on the command line of the docker image.
       - run: semgrep scan --config auto --oss-only --dataflow-traces -q --text --json-output=semgrep_fullscan.json --severity=WARNING --severity=ERROR .
-      
-      - name: Read report contents
-        id: read-report
-        run: cat semgrep_fullscan.json >> $GITHUB_OUTPUT
 
-      - name: Test
-        run: echo $GITHUB_OUTPUT
-
-      - name: Conditionally run next step
-        if: ${{ contains(steps.read-file.outputs.contents, 'WARNING') }}
-        run: echo "Expressions were found in the file."
+      - name: Create Check Run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+           gh api -X POST -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/${{ github.repository }}/check-runs
+            --input - <<- EOF
+              {
+                  "name: "A Mighty Test",
+                  "head_sha": "${{ github.event.pull_request.head.sha }}",
+                  "conclusion": "failure",
+                  "output": {
+                      "title": "A Mighty Summary"
+                  }
+              }
+           EOF
