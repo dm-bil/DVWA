@@ -16,7 +16,11 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+    - name: Test vars
+      run: |
+          echo ${{github.event.pull_request.base.ref}}
+          echo ${{github.event.pull_request.head.ref}}
     - name: Secret Scanning
       uses: trufflesecurity/trufflehog@main
-      with:
-          extra_args: --json --max-depth=1
+      #base: 
+      #head: 
