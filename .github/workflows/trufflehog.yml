@@ -19,4 +19,7 @@ jobs:
     - name: Secret Scanning
       uses: trufflesecurity/trufflehog@main
       with:
-        extra_args: -j --max-depth=1
+        extra_args: -j
+        base: ${{ github.event.pull_request.base.ref }}
+        head: ${{ github.event.pull_request.head.ref }}
+        
