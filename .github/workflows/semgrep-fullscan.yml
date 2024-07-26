@@ -27,7 +27,7 @@ jobs:
              -H "Authorization: Bearer $GH_TOKEN"\
              -H "X-GitHub-Api-Version: 2022-11-28" \
              https://api.github.com/repos/${{ github.repository }}/check-runs \
-             -d '{"name":"Semgrep Status Check", "head_sha":"${{ github.event.pull_request.head.sha }}", "status":"in_progress","output":{"title":"Semgrep scan results", "summary":"Waiting for Semgrep scanner to run"}}' \
+             -d '{"name":"Semgrep Status Check", "head_sha":"${{ github.event.pull_request.head.sha }}", "status":"queued","output":{"title":"Semgrep scan results", "summary":"Waiting for Semgrep scanner to run"}}' \
              | jq '.id')
 
              echo "check_id=$CHECKID" >> $GITHUB_OUTPUT
@@ -45,9 +45,7 @@ jobs:
              -d '{"name":"Semgrep Status Check", "head_sha":"${{ github.event.pull_request.head.sha }}", "status":"in_progress","output":{"title":"Semgrep scan results", "summary":"Semgrep scanner is running"}}'
 
       - name: Run Semgrep fullscan
-        env:
-          BRANCH_NAME: ${{ github.event.pull_request.head.sha }}
-        run: semgrep scan --config auto --semgrep-branch=$BRANCH_NAME --oss-only --dataflow-traces -q --text --json-output=semgrep_fullscan.json --vim-output=semgrep_fullscan.txt --severity=WARNING --severity=ERROR .
+        run: semgrep scan --config auto --oss-only --dataflow-traces -q --text --json-output=semgrep_fullscan.json --vim-output=semgrep_fullscan.txt --severity=WARNING --severity=ERROR .
 
       - name: Fail Status Check (scan failed)
         if: ${{ failure() }}
