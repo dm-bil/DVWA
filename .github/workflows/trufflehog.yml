@@ -21,3 +21,4 @@ jobs:
       with:
         base: ${{github.event.pull_request.base.ref}}
         head: ${{github.event.pull_request.head.ref}}
+        extra_args: -j
