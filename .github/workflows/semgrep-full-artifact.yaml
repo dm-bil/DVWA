@@ -1,0 +1,34 @@
+# Name of this GitHub Actions workflow.
+name: Semgrep Full Scan
+
+on:
+  workflow_dispatch: 
+  schedule:
+    - cron: "0 10 * * 2"
+
+jobs:
+  semgrep:
+    name: semgrep/scan
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get repo details
+        id: get-repo-details
+        run: echo "name=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}" >> $GITHUB_OUTPUT
+
+      - name: Run Semgrep fullscan
+        run: semgrep scan --config auto --oss-only --dataflow-traces --text --text-output=semgrep_fullscan.txt --sarif-output=semgrep_fullscan.sarif --severity=WARNING --severity=ERROR .
+      
+      - name: Upload reports as artifact
+        uses: actions/upload-artifact@master
+        env:
+          REPO_NAME: ${{ steps.get-repo-details.outputs.name }}
+        with:
+           name: $REPO_NAME Semgrep Fullscan report
+           path: | 
+             ${{github.workspace}}/semgrep_fullscan.txt
+             ${{github.workspace}}/semgrep_fullscan.sarif
+             
