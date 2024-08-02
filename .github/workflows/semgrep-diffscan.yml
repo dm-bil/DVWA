@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run Semgrep differential scan
-        run: semgrep ci --config auto --oss-only --dataflow-traces --no-error --text --text-output=semgrep_diffscan.txt --sarif-output=semgrep_diffscan.sarif || true
+        run: semgrep ci --config auto --oss-only --dataflow-traces --text --text-output=semgrep_diffscan.txt --sarif-output=semgrep_diffscan.sarif || true
 
       - name: Upload reports
         uses: actions/upload-artifact@master
