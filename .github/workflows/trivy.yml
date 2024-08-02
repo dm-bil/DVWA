@@ -21,7 +21,7 @@ jobs:
           scan-type: "fs"
           vuln-type: "library"
           scanners: "vuln"
-          re-unfixed: true
+          ignore-unfixed: true
           format: "table"
           output: "trivy_scan.txt"
           severity: "MEDIUM,HIGH,CRITICAL"
