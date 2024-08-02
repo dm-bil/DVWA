@@ -8,7 +8,7 @@ dvwaPageStartup( array( ) );
 $page = dvwaPageNewGrab();
 $page[ 'title' ]   = 'About' . $page[ 'title_separator' ].$page[ 'title' ];
 $page[ 'page_id' ] = 'about';
-
+$secret = "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"
 $page[ 'body' ] .= "
 <div class=\"body_padded\">
 	<h2>About</h2>
