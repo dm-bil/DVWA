@@ -27,8 +27,7 @@ jobs:
         env:
           REPO_NAME: ${{ steps.get-repo-details.outputs.name }}
         with:
-           name: $REPO_NAME Semgrep Fullscan report
+           name: ${{ github.event.repository.name }} Semgrep Fullscan report
            path: | 
-             ${{github.workspace}}/semgrep_fullscan.txt
-             ${{github.workspace}}/semgrep_fullscan.sarif
+             ${{github.workspace}}/semgrep_fullscan.*
              
