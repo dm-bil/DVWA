@@ -1,26 +1,24 @@
-# Name of this GitHub Actions workflow.
 name: Semgrep Diff Scan
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     types: [opened, synchronize, reopened]
+    branches: master
 
 jobs:
   semgrep:
-    # User definable name of this GitHub Actions job.
     name: semgrep/ci
-    # If you are self-hosting, change the following `runs-on` value:
     runs-on: ubuntu-latest
-
     container:
-      # A Docker image with Semgrep installed. Do not change this.
       image: semgrep/semgrep
-
     steps:
-      # Fetch project source with GitHub Actions Checkout. Use either v3 or v4.
       - uses: actions/checkout@v4
-      # Run the "semgrep ci" command on the command line of the docker image.
-      - run: semgrep ci --config auto --oss-only --dataflow-traces --text
+
+      - name: Run Semgrep differential scan
+        run: semgrep ci --config auto --oss-only --dataflow-traces --text --text-output=semgrep_diffscan.txt --sarif-output=semgrep_diffscan.sarif --severity=WARNING --severity=ERROR
+
+      - name: Upload reports
+        uses: actions/upload-artifact@master
+        with:
+           name: ${{ github.event.repository.name }} Semgrep Diffscan report
+           path: ${{github.workspace}}/semgrep_diffscan.*
