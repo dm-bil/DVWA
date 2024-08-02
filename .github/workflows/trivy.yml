@@ -1,0 +1,35 @@
+name: Run Trivy scan
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: master
+    workflow_dispatch: 
+  schedule:
+    - cron: "0 20 * * 2"
+
+jobs:
+  trivy:
+    name: trivy/depcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Trivy Dependency scan
+        uses: aquasecurity/trivy-action@latest
+        with:
+          scan-type: "fs"
+          vuln-type: "library"
+          scanners: "vuln"
+          re-unfixed: true
+          format: "table"
+          output: "trivy_scan.txt"
+          severity: "MEDIUM,HIGH,CRITICAL"
+          trivyignores: ".trivyignore.yaml"
+
+
+      - name: Upload reports
+        uses: actions/upload-artifact@master
+        with:
+           name: ${{ github.event.repository.name }} Trivy Scan report
+           path: ${{ github.workspace }}/trivy_scan.*
