@@ -15,10 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Get repo details
-        id: get-repo-details
-        run: echo "name=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}" >> $GITHUB_OUTPUT
-
       - name: Run Semgrep fullscan
         run: semgrep scan --config auto --oss-only --dataflow-traces --text --text-output=semgrep_fullscan.txt --sarif-output=semgrep_fullscan.sarif --severity=WARNING --severity=ERROR .
       
